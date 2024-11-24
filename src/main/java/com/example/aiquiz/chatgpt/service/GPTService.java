@@ -2,14 +2,18 @@ package com.example.aiquiz.chatgpt.service;
 
 import com.example.aiquiz.chatgpt.dto.GPTRequest;
 import com.example.aiquiz.chatgpt.dto.GPTResponse;
+import lombok.Value;
 import okhttp3.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GPTService {
-    private static final String API_URL = "https://api.openai.com/v1/completions";
-    private static final String API_KEY = null;
+
+    @Value("${openai.api.key}")
+    private String apiKey;
+
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
     public String generateQuiz(String prompt) throws Exception {
         OkHttpClient client = new OkHttpClient();
