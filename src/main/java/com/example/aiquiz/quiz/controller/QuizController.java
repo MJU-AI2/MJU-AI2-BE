@@ -21,7 +21,6 @@ public interface QuizController {
     @GetMapping("/all")
     ResponseEntity<GetQuizResponse> getAllQuiz(
             @RequestParam(value = "size", required = false, defaultValue = "20") int size,
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(name = "sort", required = false, defaultValue = "LATEST") String sortOptions);
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page );
 
 }

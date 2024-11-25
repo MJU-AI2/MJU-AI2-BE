@@ -6,6 +6,7 @@ import lombok.Builder;
 
 @Builder
 @Schema( name="Quiz Response", description="퀴즈 정보 응답")
+
 public record GetQuizResponse(
         @Schema( description="퀴즈 id")Long id,
         @Schema( description="퀴즈 제목") String title,

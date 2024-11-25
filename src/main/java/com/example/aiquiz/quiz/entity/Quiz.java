@@ -31,8 +31,6 @@ public class Quiz extends BaseEntity {
 	private Category category;
 	private String imageURL;
 	private int timeLimit;
-
-	// Quiz Image URL
 	private String url;
 
 }
