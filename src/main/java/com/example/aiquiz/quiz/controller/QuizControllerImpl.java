@@ -1,6 +1,7 @@
 package com.example.aiquiz.quiz.controller;
 
-import com.example.aiquiz.chatgpt.service.GPTService;
+//import com.example.aiquiz.chatgpt.service.GPTService;
+import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
 import com.example.aiquiz.quiz.entity.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class QuizControllerImpl implements QuizController {
 
 	private final QuizService quizService;
-	private final GPTService gptService;
+
+	@Override
+	public ResponseEntity<GetQuizResponse> getAllQuiz(int size, int page, String sortOptions) {
+		return null;
+	}
+	//private final GPTService gptService;
 
 	/**
 	 * 퀴즈 생성
@@ -28,6 +34,7 @@ public class QuizControllerImpl implements QuizController {
 	 * @param difficulty 난이도 (초급, 중급, 고급)
 	 * @return 생성된 퀴즈
 	 */
+	/*
 	@GetMapping("/generate")
 	public ResponseEntity<String> generateQuiz(
 			@RequestParam Category category,
@@ -42,6 +49,7 @@ public class QuizControllerImpl implements QuizController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error generating quiz: " + e.getMessage());
 		}
 	}
+	*/
 
 	/**
 	 * 주어진 카테고리, 주제, 난이도에 맞는 퀴즈 생성 프롬프트 작성
@@ -49,7 +57,8 @@ public class QuizControllerImpl implements QuizController {
 	 * @param topic 주제
 	 * @param difficulty 난이도
 	 * @return GPT에 전달할 퀴즈 생성 프롬프트
-	 */
+	 **/
+	/*
 	private String generatePrompt(Category category, String topic, String difficulty) {
 		String prompt = "";
 		if (category == Category.COMPUTER_SCIENCE_TERM) {
@@ -59,4 +68,6 @@ public class QuizControllerImpl implements QuizController {
 		}
 		return prompt;
 	}
+	*/
+
 }

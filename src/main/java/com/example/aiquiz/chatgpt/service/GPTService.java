@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class GPTService {
 
-    @Value("${openai.api.key}")
+    //@Value("${openai.api.key}")
     private String apiKey;
 
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
-
+/*
     public String generateQuiz(String prompt) throws Exception {
         OkHttpClient client = new OkHttpClient();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -23,6 +23,7 @@ public class GPTService {
         String jsonPayload = objectMapper.writeValueAsString(requestPayload);
 
         RequestBody body = RequestBody.create(jsonPayload, MediaType.parse("application/json"));
+
         Request request = new Request.Builder()
                 .url(API_URL)
                 .header("Authorization", "Bearer " + API_KEY)
@@ -37,5 +38,6 @@ public class GPTService {
                 throw new Exception("API call failed: " + response.code());
             }
         }
-    }
+
+    }*/
 }
