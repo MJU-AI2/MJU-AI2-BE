@@ -2,9 +2,8 @@ package com.example.aiquiz.quiz.controller;
 
 //import com.example.aiquiz.chatgpt.service.GPTService;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
-import com.example.aiquiz.quiz.entity.Category;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.example.aiquiz.quiz.dto.response.PageResponse;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +21,11 @@ public class QuizControllerImpl implements QuizController {
 	private final QuizService quizService;
 
 	@Override
-	public ResponseEntity<GetQuizResponse> getAllQuiz(int size, int page) {
-		return null;
+	@GetMapping("/all")
+	public PageResponse<GetQuizResponse> getAllQuiz(
+			@RequestParam(value = "size", required = false, defaultValue = "20") int size,
+			@RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+		PageRequest pageRequest = PageRequest.of( page, size );
+		return quizService.getAllQuiz( pageRequest );
 	}
 }

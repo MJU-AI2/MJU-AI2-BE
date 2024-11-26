@@ -16,8 +16,8 @@ public class QuizService {
 
 	private final QuizRepository quizRepository;
 
-	public PageResponse<GetQuizResponse> getAllClothes(PageRequest pageRequest) {
-		return PageUtils.toPageResponse(quizRepository.findAllByDeletedAtIsNull(pageRequest));
+	public PageResponse<GetQuizResponse> getAllQuiz(PageRequest pageRequest) {
+		return PageUtils.toPageResponse(quizRepository.findAllByDeletedAtIsNull(pageRequest)).map(GetQuizResponse::of);
 	}
 
 }
