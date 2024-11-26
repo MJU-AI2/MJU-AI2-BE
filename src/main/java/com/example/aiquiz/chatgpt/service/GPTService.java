@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GPTService {
 
-    @Value("${openai.api.key}")
-    private String apiKey;
-
+    private static final String API_KEY = System.getenv("OPENAI_API_KEY");
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
     public String generateQuiz(String prompt) throws Exception {
