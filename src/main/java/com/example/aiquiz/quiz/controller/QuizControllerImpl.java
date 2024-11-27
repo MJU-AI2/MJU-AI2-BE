@@ -5,6 +5,7 @@ import com.example.aiquiz.quiz.constants.AlgorithmLanguage;
 import com.example.aiquiz.quiz.constants.Category;
 import com.example.aiquiz.quiz.constants.DifficultyLevel;
 import com.example.aiquiz.quiz.constants.Topic;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/quiz")
 @RequiredArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class QuizControllerImpl implements QuizController {
 
 	private final QuizService quizService;

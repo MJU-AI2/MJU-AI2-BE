@@ -6,11 +6,13 @@ import lombok.*;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GPTResponse {
+
     private String id;
     private String object;
     private String created;
@@ -46,6 +48,7 @@ public class GPTResponse {
         throw new Exception("Invalid response: No choices available");
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -55,3 +58,5 @@ public class GPTResponse {
         private String answer;        // 정답
     }
 }
+
+

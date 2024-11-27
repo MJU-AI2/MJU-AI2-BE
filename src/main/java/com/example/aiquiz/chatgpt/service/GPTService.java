@@ -1,5 +1,6 @@
 package com.example.aiquiz.chatgpt.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ public class GPTService {
     public String generateQuiz(String basePrompt) throws Exception {
         OkHttpClient client = new OkHttpClient();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String fullPrompt = basePrompt + "\n\n" +
                 "Respond in JSON format with the following structure:\n" +
