@@ -3,7 +3,11 @@ package com.example.aiquiz.quiz.controller;
 import java.io.ByteArrayOutputStream;
 
 import com.example.aiquiz.chatgpt.service.GPTService;
+import com.example.aiquiz.common.dto.response.PageResponse;
+import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
 import com.example.aiquiz.quiz.entity.Category;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -86,5 +90,16 @@ public class QuizControllerImpl implements QuizController {
 		return ResponseEntity.ok()
 			.contentType(MediaType.IMAGE_PNG)
 			.body(outputStream.toByteArray());
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<PageResponse<GetQuizResponse>>> getAllClothes(int size, int page) {
+		PageRequest pageRequest = PageRequest.of( page, size );
+		return SuccessResponse.of( quizService.getAllQuiz( pageRequest ) ).asHttp( HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<Integer>> getQuizCount() {
+		return SuccessResponse.of( quizService.getQuizCount() ).asHttp( HttpStatus.OK );
 	}
 }
