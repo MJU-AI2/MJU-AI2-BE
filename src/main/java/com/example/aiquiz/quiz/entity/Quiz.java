@@ -1,5 +1,6 @@
 package com.example.aiquiz.quiz.entity;
 
+import com.example.aiquiz.quiz.constants.Category;
 import com.example.aiquiz.util.BaseEntity;
 
 import jakarta.persistence.Column;

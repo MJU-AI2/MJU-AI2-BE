@@ -1,6 +1,7 @@
 package com.example.aiquiz.chatgpt.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
 import java.util.List;
@@ -33,10 +34,24 @@ public class GPTResponse {
     public static class Message {
         private String role;
         private String content;
-        private String refusal;
     }
 
-    public String getGeneratedText() {
-        return choices.get(0).getMessage().getContent();
+    // OpenAI 응답에서 첫 번째 결과를 Quiz 객체로 변환
+    public Quiz toQuiz() throws Exception {
+        if (choices != null && !choices.isEmpty()) {
+            String content = choices.get(0).getMessage().getContent(); // JSON 형식의 응답
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(content, Quiz.class); // 응답을 Quiz 객체로 변환
+        }
+        throw new Exception("Invalid response: No choices available");
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Quiz {
+        private String question;      // 문제 내용
+        private List<String> choices; // 선택지 (4지선다의 경우, 아니면 null)
+        private String answer;        // 정답
     }
 }

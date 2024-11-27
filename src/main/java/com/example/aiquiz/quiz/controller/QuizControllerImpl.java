@@ -1,7 +1,10 @@
 package com.example.aiquiz.quiz.controller;
 
 import com.example.aiquiz.chatgpt.service.GPTService;
-import com.example.aiquiz.quiz.entity.Category;
+import com.example.aiquiz.quiz.constants.AlgorithmLanguage;
+import com.example.aiquiz.quiz.constants.Category;
+import com.example.aiquiz.quiz.constants.DifficultyLevel;
+import com.example.aiquiz.quiz.constants.Topic;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +35,7 @@ public class QuizControllerImpl implements QuizController {
 	public ResponseEntity<String> generateQuiz(
 			@RequestParam Category category,
 			@RequestParam String topic,
-			@RequestParam String difficulty) {
+			@RequestParam DifficultyLevel difficulty) {
 		try {
 			// 주어진 카테고리에 맞는 퀴즈 생성 프롬프트 작성
 			String prompt = generatePrompt(category, topic, difficulty);
@@ -50,13 +53,14 @@ public class QuizControllerImpl implements QuizController {
 	 * @param difficulty 난이도
 	 * @return GPT에 전달할 퀴즈 생성 프롬프트
 	 */
-	private String generatePrompt(Category category, String topic, String difficulty) {
-		String prompt = "";
+	private String generatePrompt(Category category, String topic, DifficultyLevel difficulty) {
+		String prompt = prompt = category.getPromptText();
 		if (category == Category.COMPUTER_SCIENCE_TERM) {
-			prompt = "Provide a computer science related quiz question about " + topic + " at " + difficulty + " level.";
-		} else if (category == Category.CODING_LANGUAGE) {
-			prompt = "Provide a coding quiz question about " + topic + " at " + difficulty + " level.";
+			 prompt += Topic.valueOf(topic).getPromptText();
+		} else if (category == Category.CODING_ALGORITHM) {
+			prompt += AlgorithmLanguage.valueOf(topic).getPromptText();
 		}
+		prompt += difficulty.getPromptText();
 		return prompt;
 	}
 }
