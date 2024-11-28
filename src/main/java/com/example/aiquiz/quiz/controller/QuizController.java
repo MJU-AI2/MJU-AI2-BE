@@ -2,8 +2,11 @@ package com.example.aiquiz.quiz.controller;
 
 import com.example.aiquiz.common.dto.response.PageResponse;
 import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.requeset.SubmitAnswerRequest;
 import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
+import com.example.aiquiz.quiz.dto.response.GetResultResponse;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,4 +55,13 @@ public interface QuizController {
 	})
 	@GetMapping( "/getQuizCount" )
 	ResponseEntity<SuccessResponse<Integer>> getQuizCount();
+
+	@Operation( summary = "답안 제출 및 결과 조회", description = "답안을 제출하고 해당 답안에 대한 정답 여부 조회" )
+	@ApiResponses( value = {
+			@ApiResponse( responseCode = "200", description = "성공적으로 동작" )
+	})
+	@PostMapping( value = "/answerSubmit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+	ResponseEntity<SuccessResponse<GetResultResponse>> submitAnswer(
+			@ModelAttribute SubmitAnswerRequest submitAnswerRequest
+			);
 }
