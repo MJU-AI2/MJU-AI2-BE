@@ -1,10 +1,7 @@
 package com.example.aiquiz.quiz.entity;
 
 import com.example.aiquiz.util.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,6 +18,7 @@ public class Answer extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
+    private Long quizID;
     private String answer;
     @CreatedDate
     private LocalDateTime submittedTime;
@@ -28,8 +26,9 @@ public class Answer extends BaseEntity {
     private LocalDateTime deletedAt;
 
     @Builder
-    public Answer( Long id, String answer, LocalDateTime submittedTime, int timeSpent ) {
+    public Answer( Long id, Long quizID, String answer, LocalDateTime submittedTime, int timeSpent ) {
         this.id = id;
+        this.quizID = quizID;
         this.answer = answer;
         this.submittedTime = submittedTime;
         this.timeSpent = timeSpent;
