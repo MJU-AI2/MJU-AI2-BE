@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.example.aiquiz.quiz.entity.Quiz;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     Page<Quiz> findAllByDeletedAtIsNull(Pageable pageable );
     List<Quiz> findAllByDeletedAtIsNull();
+    Optional<Quiz> findByIdAndDeletedAtIsNull(Long quizID);
 }

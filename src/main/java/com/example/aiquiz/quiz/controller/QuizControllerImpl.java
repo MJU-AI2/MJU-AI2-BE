@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import com.example.aiquiz.chatgpt.service.GPTService;
 import com.example.aiquiz.common.dto.response.PageResponse;
 import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
 import com.example.aiquiz.quiz.entity.Category;
 import org.springframework.data.domain.PageRequest;
@@ -96,6 +97,12 @@ public class QuizControllerImpl implements QuizController {
 	public ResponseEntity<SuccessResponse<PageResponse<GetQuizResponse>>> getAllClothes(int size, int page) {
 		PageRequest pageRequest = PageRequest.of( page, size );
 		return SuccessResponse.of( quizService.getAllQuiz( pageRequest ) ).asHttp( HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<GetQuizDetailResponse>> getQuizDetail(Long quizID) {
+		GetQuizDetailResponse getQuizDetailResponse = quizService.getQuizDetail(quizID);
+		return SuccessResponse.of( getQuizDetailResponse ).asHttp( HttpStatus.OK );
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.example.aiquiz.quiz.controller;
 
 import com.example.aiquiz.common.dto.response.PageResponse;
 import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,18 @@ public interface QuizController {
 	ResponseEntity<SuccessResponse<PageResponse<GetQuizResponse>>> getAllClothes(
 			@RequestParam(value = "size", required = false, defaultValue = "20") int size,
 			@RequestParam(value = "page", required = false, defaultValue = "0") int page);
+
+	@Operation(summary = "퀴즈 상세 조회", description = "특정 퀴즈 상세 조회")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "성공적으로 조회")
+	})
+	@GetMapping("/{quizID}")
+	ResponseEntity<SuccessResponse<GetQuizDetailResponse>> getQuizDetail(
+			@PathVariable Long quizID
+	);
+
 
 	@Operation( summary = "퀴즈 개수 조회", description = "테스트를 위한 퀴즈 개수 조회" )
 	@ApiResponses( value = {
