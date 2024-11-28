@@ -9,22 +9,20 @@ import lombok.Builder;
 @Schema( name="Get Quiz Response", description="퀴즈 조회 응답")
 public record GetQuizResponse(
         @Schema( description = "퀴즈 ID" ) Long id,
-        @Schema( description = "퀴즈 번호" ) int quizNum,
         @Schema( description = "퀴즈 제목" ) String title,
         @Schema( description = "퀴즈 내용" ) String content,
         @Schema( description = "퀴즈 정답" ) String answer,
         @Schema( description = "퀴즈 카테고리" ) Category category,
-        @Schema( description = "퀴즈 URL" ) String url
+        @Schema( description = "퀴즈 난이도" ) String difficulty
 ) {
     public static GetQuizResponse of( Quiz quiz ){
         return GetQuizResponse.builder()
                 .id( quiz.getId() )
-                .quizNum( quiz.getQuizNum() )
                 .title( quiz.getTitle() )
                 .content( quiz.getContent() )
                 .answer( quiz.getAnswer() )
                 .category( quiz.getCategory() )
-                .url( quiz.getUrl() )
+                .difficulty( quiz.getDifficulty() )
                 .build();
     }
 }

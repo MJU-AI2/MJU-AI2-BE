@@ -18,25 +18,22 @@ public class Quiz extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "quiz_num")
-	private int quizNum;
 	private String title;
 	private String content;
 	private String answer;
 	@Enumerated( EnumType.STRING )
 	private Category category;
-	private String url;
+	private String difficulty;
 	private LocalDateTime deletedAt;
 
 	@Builder
-	public Quiz( Long id, int quizNum, String title, String content, String answer, Category category, String url ){
+	public Quiz( Long id, String title, String content, String answer, Category category, String difficulty){
 		this.id = id;
-		this.quizNum = quizNum;
 		this.title = title;
 		this.content = content;
 		this.answer = answer;
 		this.category = category;
-		this.url = url;
+		this.difficulty = difficulty;
 		this.deletedAt = null;
 	}
 }
