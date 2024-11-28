@@ -1,4 +1,4 @@
-package com.example.aiquiz.utils;
+package com.example.aiquiz.quiz.utils;
 
 import com.example.aiquiz.quiz.dto.response.PageResponse;
 import org.springframework.data.domain.Page;
