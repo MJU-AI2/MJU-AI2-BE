@@ -60,8 +60,8 @@ public interface QuizController {
 	@ApiResponses( value = {
 			@ApiResponse( responseCode = "200", description = "성공적으로 동작" )
 	})
-	@PostMapping( value = "/answerSubmit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+	@PostMapping( value = "/answerSubmit" )
 	ResponseEntity<SuccessResponse<GetResultResponse>> submitAnswer(
-			@ModelAttribute SubmitAnswerRequest submitAnswerRequest
+			@RequestBody SubmitAnswerRequest submitAnswerRequest
 			);
 }
