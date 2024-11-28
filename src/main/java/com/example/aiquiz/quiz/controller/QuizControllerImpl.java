@@ -5,7 +5,10 @@ import java.io.ByteArrayOutputStream;
 import com.example.aiquiz.chatgpt.service.GPTService;
 import com.example.aiquiz.common.dto.response.PageResponse;
 import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.requeset.SubmitAnswerRequest;
+import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
+import com.example.aiquiz.quiz.dto.response.GetResultResponse;
 import com.example.aiquiz.quiz.entity.Category;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -99,7 +102,19 @@ public class QuizControllerImpl implements QuizController {
 	}
 
 	@Override
+	public ResponseEntity<SuccessResponse<GetQuizDetailResponse>> getQuizDetail(Long quizID) {
+		GetQuizDetailResponse getQuizDetailResponse = quizService.getQuizDetail(quizID);
+		return SuccessResponse.of( getQuizDetailResponse ).asHttp( HttpStatus.OK );
+	}
+
+	@Override
 	public ResponseEntity<SuccessResponse<Integer>> getQuizCount() {
 		return SuccessResponse.of( quizService.getQuizCount() ).asHttp( HttpStatus.OK );
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<GetResultResponse>> submitAnswer( SubmitAnswerRequest submitAnswerRequest ) {
+		GetResultResponse getResultResponse = quizService.submitAnswer( submitAnswerRequest );
+		return SuccessResponse.of( getResultResponse ).asHttp( HttpStatus.OK );
 	}
 }
