@@ -7,6 +7,8 @@ import lombok.Setter;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class GPTService {
 
@@ -14,7 +16,12 @@ public class GPTService {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
     public String generateQuiz(String basePrompt) throws Exception {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client =  new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)    // 연결 타임아웃
+                .writeTimeout(10, TimeUnit.SECONDS)      // 데이터 쓰기 타임아웃
+                .readTimeout(30, TimeUnit.SECONDS)       // 데이터 읽기 타임아웃
+                .build();
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
