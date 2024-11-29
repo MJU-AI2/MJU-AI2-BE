@@ -9,7 +9,8 @@ public enum Topic {
     DATA_STRUCTURE("데이터 구조"),
     ALGORITHM("알고리즘"),
     OS("운영체제"),
-    NETWORK("네트워크");
+    NETWORK("네트워크"),
+    HARDWARE("하드웨어");
 
     private final String name;
     public String getPromptText() {
