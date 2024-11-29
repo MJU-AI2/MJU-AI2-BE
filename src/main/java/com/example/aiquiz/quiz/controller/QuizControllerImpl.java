@@ -1,12 +1,18 @@
 package com.example.aiquiz.quiz.controller;
 
+import java.io.ByteArrayOutputStream;
+
 import com.example.aiquiz.chatgpt.service.GPTService;
-import com.example.aiquiz.quiz.constants.AlgorithmLanguage;
-import com.example.aiquiz.quiz.constants.Category;
-import com.example.aiquiz.quiz.constants.DifficultyLevel;
-import com.example.aiquiz.quiz.constants.Topic;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.example.aiquiz.common.dto.response.PageResponse;
+import com.example.aiquiz.common.dto.response.SuccessResponse;
+import com.example.aiquiz.quiz.dto.requeset.SubmitAnswerRequest;
+import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
+import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
+import com.example.aiquiz.quiz.dto.response.GetResultResponse;
+import com.example.aiquiz.quiz.entity.Category;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.aiquiz.quiz.service.QuizService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/quiz")
 @RequiredArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class QuizControllerImpl implements QuizController {
 
 	private final QuizService quizService;
@@ -37,7 +46,7 @@ public class QuizControllerImpl implements QuizController {
 	public ResponseEntity<String> generateQuiz(
 			@RequestParam Category category,
 			@RequestParam String topic,
-			@RequestParam DifficultyLevel difficulty) {
+			@RequestParam String difficulty) {
 		try {
 			// 주어진 카테고리에 맞는 퀴즈 생성 프롬프트 작성
 			String prompt = generatePrompt(category, topic, difficulty);
@@ -55,14 +64,57 @@ public class QuizControllerImpl implements QuizController {
 	 * @param difficulty 난이도
 	 * @return GPT에 전달할 퀴즈 생성 프롬프트
 	 */
-	private String generatePrompt(Category category, String topic, DifficultyLevel difficulty) {
-		String prompt = prompt = category.getPromptText();
+	private String generatePrompt(Category category, String topic, String difficulty) {
+		String prompt = "";
 		if (category == Category.COMPUTER_SCIENCE_TERM) {
-			 prompt += Topic.valueOf(topic).getPromptText();
-		} else if (category == Category.CODING_ALGORITHM) {
-			prompt += AlgorithmLanguage.valueOf(topic).getPromptText();
+			prompt = "Provide a computer science related quiz question about " + topic + " at " + difficulty + " level.";
+		} else if (category == Category.CODING_LANGUAGE) {
+			prompt = "Provide a coding quiz question about " + topic + " at " + difficulty + " level.";
 		}
-		prompt += difficulty.getPromptText();
 		return prompt;
+	}
+
+	@Override
+	public ResponseEntity<byte[]> generateQR(Long quizId) throws Exception {
+		// TODO quizURL 변경 필요 - 배포 이후
+		String problemUrl = "http://your-domain.com/problem/" + quizId;
+
+		QRCodeWriter qrCodeWriter = new QRCodeWriter();
+		BitMatrix bitMatrix = qrCodeWriter.encode(
+			problemUrl,
+			BarcodeFormat.QR_CODE,
+			300,
+			300
+		);
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+
+		return ResponseEntity.ok()
+			.contentType(MediaType.IMAGE_PNG)
+			.body(outputStream.toByteArray());
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<PageResponse<GetQuizResponse>>> getAllClothes(int size, int page) {
+		PageRequest pageRequest = PageRequest.of( page, size );
+		return SuccessResponse.of( quizService.getAllQuiz( pageRequest ) ).asHttp( HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<GetQuizDetailResponse>> getQuizDetail(Long quizID) {
+		GetQuizDetailResponse getQuizDetailResponse = quizService.getQuizDetail(quizID);
+		return SuccessResponse.of( getQuizDetailResponse ).asHttp( HttpStatus.OK );
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<Integer>> getQuizCount() {
+		return SuccessResponse.of( quizService.getQuizCount() ).asHttp( HttpStatus.OK );
+	}
+
+	@Override
+	public ResponseEntity<SuccessResponse<GetResultResponse>> submitAnswer( SubmitAnswerRequest submitAnswerRequest ) {
+		GetResultResponse getResultResponse = quizService.submitAnswer( submitAnswerRequest );
+		return SuccessResponse.of( getResultResponse ).asHttp( HttpStatus.OK );
 	}
 }
