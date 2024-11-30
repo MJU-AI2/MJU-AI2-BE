@@ -73,7 +73,7 @@ public class QuizControllerImpl implements QuizController {
 
 	@Override
 	public ResponseEntity<byte[]> generateQR(Long quizId) throws Exception {
-		String problemUrl = "http://your-domain.com/problem/" + quizId;
+		String problemUrl = "http://43.201.19.254:5173/" + quizId;
 
 		QRCodeWriter qrCodeWriter = new QRCodeWriter();
 		BitMatrix bitMatrix = qrCodeWriter.encode(
