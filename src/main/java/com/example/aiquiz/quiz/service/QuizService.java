@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class QuizService {
@@ -58,18 +60,22 @@ public class QuizService {
 		// GPT에서 문제 생성 및 파싱된 데이터 수신
 		GPTResponse gptResponse = gptService.generateQuiz(prompt, quizType);
 
-		// Quiz 엔티티 생성 및 저장
+		String question = gptResponse.getQuestion();     // 문제
+		List<String> choices = gptResponse.getChoices(); // 보기
+
 		Quiz quiz = Quiz.builder()
-				.title(gptResponse.getTitle()) // GPT에서 받은 제목
-				.content(gptResponse.getQuestion() + "\n" + String.join("\n", gptResponse.getChoices())) // 문제와 선택지
-				.answer(gptResponse.getAnswer()) // 정답
-				.category(category) // 요청 파라미터의 카테고리
-				.difficulty(difficulty.name()) // 요청 파라미터의 난이도
-				.quizType(quizType) // 요청 파라미터의 퀴즈 유형
+				.title(gptResponse.getTitle())
+				.content(question)
+				.choices(choices)
+				.answer(gptResponse.getAnswer())
+				.category(category)
+				.difficulty(difficulty.name())
+				.quizType(quizType)
 				.build();
 
 		return quizRepository.save(quiz);
 	}
+
 
 
 
