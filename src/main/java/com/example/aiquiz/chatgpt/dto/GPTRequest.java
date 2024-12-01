@@ -18,7 +18,7 @@ public class GPTRequest {
     public GPTRequest(String prompt) {
         this.model = "gpt-4";
         this.messages = List.of(new Message("user", prompt));
-        this.max_tokens = 100;
+        this.max_tokens = 500;
         this.temperature = 0.7;
     }
 
