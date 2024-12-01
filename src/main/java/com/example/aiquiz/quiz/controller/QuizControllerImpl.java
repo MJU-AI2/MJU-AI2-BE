@@ -37,17 +37,17 @@ public class QuizControllerImpl implements QuizController {
 	@PostMapping("/generate")
 	public ResponseEntity<SuccessResponse<Quiz>> generateQuiz(@RequestBody GenerateQuizRequest request) {
 		try {
-			// 요청 바디에서 데이터를 추출
-			String prompt = generatePrompt(request.getCategory(), request.getTopic(), request.getDifficulty(), request.getQuizType());
-
-			// QuizService 호출
+			String prompt = generatePrompt(
+					request.getCategory(),
+					request.getTopic(),
+					request.getDifficulty(),
+					request.getQuizType());
 			Quiz quiz = quizService.createQuizFromGPT(
 					prompt,
 					request.getCategory(),
 					request.getTopic(),
 					request.getDifficulty(),
-					request.getQuizType()
-			);
+					request.getQuizType());
 			return SuccessResponse.of(quiz).asHttp(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
