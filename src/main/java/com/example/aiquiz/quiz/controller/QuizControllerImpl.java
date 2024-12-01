@@ -35,7 +35,7 @@ public class QuizControllerImpl implements QuizController {
 	private final GPTService gptService;
 
 	@PostMapping("/generate")
-	public ResponseEntity<Quiz> generateQuiz(@RequestBody GenerateQuizRequest request) {
+	public ResponseEntity<SuccessResponse<Quiz>> generateQuiz(@RequestBody GenerateQuizRequest request) {
 		try {
 			// 요청 바디에서 데이터를 추출
 			String prompt = generatePrompt(request.getCategory(), request.getTopic(), request.getDifficulty(), request.getQuizType());
@@ -48,7 +48,7 @@ public class QuizControllerImpl implements QuizController {
 					request.getDifficulty(),
 					request.getQuizType()
 			);
-			return ResponseEntity.ok(quiz);
+			return SuccessResponse.of(quiz).asHttp(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
