@@ -1,5 +1,7 @@
 package com.example.aiquiz.quiz.dto.response;
 
+import java.util.List;
+
 import com.example.aiquiz.quiz.constants.Category;
 import com.example.aiquiz.quiz.constants.QuizType;
 import com.example.aiquiz.quiz.entity.Quiz;
@@ -15,7 +17,8 @@ public record GetQuizDetailResponse(
         @Schema( description="퀴즈 정답" ) String answer,
         @Schema( description="카테고리" ) Category category,
         @Schema( description="퀴즈 난이도" ) String difficulty,
-        @Schema( description = "문제 유형" ) QuizType quizType
+        @Schema( description = "문제 유형" ) QuizType quizType,
+        @Schema( description = "객관식 선택지" ) List<String> choices
 ) {
     public static GetQuizDetailResponse of( Quiz quiz ){
         return GetQuizDetailResponse.builder()
@@ -26,6 +29,7 @@ public record GetQuizDetailResponse(
                 .category( quiz.getCategory() )
                 .difficulty( quiz.getDifficulty() )
                 .quizType( quiz.getQuizType() )
+                .choices(quiz.getChoices())
                 .build();
     }
 }
