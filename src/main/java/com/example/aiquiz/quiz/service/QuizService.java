@@ -7,10 +7,12 @@ import com.example.aiquiz.exception.QuizNotFoundException;
 import com.example.aiquiz.quiz.constants.Category;
 import com.example.aiquiz.quiz.constants.DifficultyLevel;
 import com.example.aiquiz.quiz.constants.QuizType;
+import com.example.aiquiz.quiz.dto.requeset.Answer;
 import com.example.aiquiz.quiz.dto.requeset.SubmitAnswerRequest;
 import com.example.aiquiz.quiz.dto.response.GetQuizDetailResponse;
 import com.example.aiquiz.quiz.dto.response.GetQuizResponse;
 import com.example.aiquiz.quiz.dto.response.GetResultResponse;
+import com.example.aiquiz.quiz.dto.response.Grade;
 import com.example.aiquiz.quiz.entity.Quiz;
 import com.example.aiquiz.quiz.entity.Result;
 import com.example.aiquiz.quiz.repository.QuizRepository;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,12 +46,17 @@ public class QuizService {
 	}
 
 	public GetResultResponse submitAnswer(SubmitAnswerRequest submitAnswerRequest) {
-		Quiz quiz = quizRepository.findByIdAndDeletedAtIsNull(submitAnswerRequest.quizID())
-				.orElseThrow(QuizNotFoundException::new);
-		Result result;
-		if (quiz.getAnswer().equals(submitAnswerRequest.submitAnswer())) result = Result.SUCCESS;
-		else result = Result.WRONG;
-		return GetResultResponse.of(quiz.getId(), submitAnswerRequest.submitAnswer(), result);
+		List<Answer> answers = submitAnswerRequest.answers();
+		List<Grade> results = new ArrayList<Grade>();
+		for( Answer answer : answers ){
+			Quiz quiz = quizRepository.findByIdAndDeletedAtIsNull(answer.quizID() )
+					.orElseThrow(QuizNotFoundException::new);
+			Result result;
+			if (quiz.getAnswer().equals( answer.submitAnswer() ) ) result = Result.SUCCESS;
+			else result = Result.WRONG;
+			results.add( Grade.of( answer.quizID(), answer.submitAnswer(), result ) );
+		}
+		return GetResultResponse.of( results );
 	}
 
 	public int getQuizCount() {
